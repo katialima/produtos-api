@@ -36,11 +36,11 @@ class ProdutosController extends Controller
      */
     public function store(Request $request)
     {
-        $produto = new Produtos();
-        $produto->fill($request->all());
-        $produto->save();
+        $item = new Produtos();
+        $item->fill($request->all());
+        $item->save();
 
-        return response()->json($produto, 201);
+        return response()->json($item, 201);
     }
 
     /**
@@ -80,24 +80,18 @@ class ProdutosController extends Controller
      * @param  \App\Produtos  $produtos
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $produtos)
+    public function update(Request $request, $id)
     {
-        try{
-
-            $item = Produtos::find($produtos);
-            if(!$item) {
-                return response()->json([
-                    'message' => 'Não encontrado',
+        $item = Produtos::find($id);
+        if(!$item) {
+            return response()->json([
+                'message' => 'Não encontrado',
             ], 404);
         }
-            $item->fill($request->all());
-            $item->save();
+        $item->fill($request->all());
+        $item->save();
 
-            return response()->json($item);
-
-        } catch (Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            response()->json($e);
-        }
+        return response()->json($item);
     }
 
     /**
@@ -106,8 +100,15 @@ class ProdutosController extends Controller
      * @param  \App\Produtos  $produtos
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Produtos $produtos)
+    public function destroy($id)
     {
-        //
+        $item = Produtos::find($id);
+        if(!$item) {
+            return response()->json([
+                'message' => 'Não encontrado',
+            ], 404);
+        }
+
+        $item->delete();
     }
 }
