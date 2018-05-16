@@ -80,12 +80,16 @@ class ProdutosController extends Controller
      * @param  \App\Produtos  $produtos
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Produtos $produtos)
+    public function update(Request $request, $produtos)
     {
         try{
-            //dd('oe', $item);
 
             $item = Produtos::find($produtos);
+            if(!$item) {
+                return response()->json([
+                    'message' => 'Não encontrado',
+            ], 404);
+        }
             $item->fill($request->all());
             $item->save();
 
@@ -94,12 +98,6 @@ class ProdutosController extends Controller
         } catch (Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             response()->json($e);
         }
-
-        // if(!$item) {
-        //     return response()->json([
-        //         'message' => 'Não encontrado',
-        //     ], 404);
-        // }
     }
 
     /**
