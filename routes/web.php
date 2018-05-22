@@ -11,13 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return response()->json(['message' => 'Produtos API', 'status' => 'Connected']);
-});
+Auth::routes();
 
-Route::group(array('prefix' => 'api'), function() {
-    
-    Route::resource('users', 'UsuariosController');
-    Route::resource('produtos', 'ProdutosController');
+Route::get('/home', 'HomeController@index')->name('home');
 
-});
+Route::resource('users', 'UsuariosController');
+Route::resource('produtos', 'ProdutosController')->middleware('authenticate');

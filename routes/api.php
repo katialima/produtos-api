@@ -16,3 +16,21 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::auth();
+
+Route::group([
+    //'prefix' => 'api'
+], function () {
+    Route::post('signup', 'AuthController@signup');
+    Route::post('login', 'AuthController@login');
+
+    Route::group([
+        'middleware' => 'auth:api'
+    ], function() {
+
+        Route::get('logout', 'AuthController@logout');
+        Route::get('user', 'AuthController@user');
+        Route::resource('users', 'UsuariosController');
+        Route::resource('produtos', 'ProdutosController');
+    });
+});
